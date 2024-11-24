@@ -50,16 +50,33 @@ ENV PATH="${POETRY_HOME}/bin:${PATH}"
 ENV POETRY_VIRTUALENVS_CREATE=true
 ENV POETRY_CACHE_DIR="/home/${NB_USER}/.cache/pypoetry"
 COPY pyproject.toml poetry.lock /home/jovyan/work/
-RUN poetry install --no-root --no-interaction --no-ansi
+RUN poetry install --no-interaction --no-ansi --only main
+
+COPY scraper_bluesky/ ./scraper_bluesky
 
 # https://github.com/python-poetry/poetry-plugin-bundle
-# RUN poetry self add poetry-plugin-bundle && \
-#     poetry bundle venv /app/venv
+# Creating a dummy README because it is mentioned in the pyproject.toml file and thus required for the
+# bundle process to work.
+RUN poetry self add poetry-plugin-bundle && \
+    touch README.md && \
+    poetry install --no-interaction --no-ansi --only main && \
+    poetry bundle venv /home/${NB_USER}/app/venv --only=main
 
-
-#COPY --chown=${NB_USER}:${NB_GID} ./hack/start-jupyter-lab.sh "/home/${NB_USER}/"
 
 # https://github.com/GoogleContainerTools/distroless
-# FROM gcr.io/distroless/python3-debian12
-# COPY --from=builder /app/venv /venv
-# ENTRYPOINT ["/venv/bin/my-awesome-app"]
+FROM gcr.io/distroless/python3-debian12 AS prod
+
+# Create the same user in distroless.
+ARG NB_USER="jovyan"
+ARG NB_UID="1000"
+ARG NB_GID="100"
+
+# Copy from the exact path used in builder.
+COPY --from=builder --chown=${NB_UID}:${NB_GID} /home/${NB_USER}/app/venv /app/venv
+
+# Switch to non-root user.
+USER ${NB_UID}
+
+# Set environment variables to match the new path.
+ENV PYTHONPATH=/app/venv/lib/python3.13/site-packages
+CMD ["/app/venv/bin/scraper-bluesky"]

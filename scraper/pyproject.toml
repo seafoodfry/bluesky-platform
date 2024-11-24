@@ -5,6 +5,14 @@ description = "Scraper of bluesky"
 authors = ["skip"]
 readme = "README.md"
 
+packages = [
+    { include = "scraper_bluesky" },
+]
+
+[tool.poetry.scripts]
+scraper-bluesky = "scraper_bluesky.__main__:main"
+
+
 [tool.poetry.dependencies]
 python = "^3.13"
 

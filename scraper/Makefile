@@ -1,6 +1,6 @@
 POETRY := ~/.poetry/bin/poetry
 PACKAGE_NAME := scraper_bluesky
-IMG := scraper:latest
+IMG := scraper
 
 
 .DEFAULT_GOAL := help
@@ -10,13 +10,22 @@ help:  ## Display this help message
 
 
 ##@ Local Development.
-.PHONY: build
-build:  ## Build container image
-	docker build -t $(IMG) .
+.PHONY: build-dev
+build-dev:  ## Build the dev container image
+	docker build --target builder -t $(IMG)-dev .
 
 .PHONY: debug
-debug: build  ## Run container
-	docker run	-it $(IMG) bash
+debug: build-dev  ## Run the dev container
+	docker run	-it $(IMG)-dev bash
+
+.PHONY: build
+build:  ## Build the prod container image
+	docker build -t $(IMG) .
+
+.PHONY: run
+run: build  ## Run the prod container
+	docker run	-it $(IMG)
+
 
 ##@ QSource Code Management.
 .PHONY: update
