@@ -1,0 +1,31 @@
+name: Scraper
+
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.13"]
+    env:
+      POETRY_HOME: "/opt/poetry"
+      POETRY: "/opt/poetry/bin/poetry"
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install poetry
+        run: |
+          python3 -m venv $POETRY_HOME
+          $POETRY_HOME/bin/pip install poetry==1.8.4
+          $POETRY --version
+      - name: Install dependencies
+        working-directory: ./scraper
+        run: |
+          $POETRY install
+      - name: QA Test
+        working-directory: ./scraper
+        run: make qa-test POETRY=$POETRY
