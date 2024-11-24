@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "scraper-bluesky"
+version = "0.1.0"
+description = "Scraper of bluesky"
+authors = ["skip"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.13"
+
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.8.0"
+pip-audit = "^2.7.3"
+bandit = "^1.7.10"
+mypy = "^1.13.0"
+pytest = "^8.3.3"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
