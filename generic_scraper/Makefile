@@ -16,7 +16,7 @@ build-dev:  ## Build the dev container image
 
 .PHONY: debug
 debug: build-dev  ## Run the dev container
-	docker run	-it $(IMG)-dev bash
+	docker run -it $(IMG)-dev bash
 
 .PHONY: build
 build:  ## Build the prod container image
@@ -24,7 +24,7 @@ build:  ## Build the prod container image
 
 .PHONY: run
 run: build  ## Run the prod container
-	docker run	-it $(IMG)
+	docker run -it $(IMG)
 
 
 ##@ QSource Code Management.
