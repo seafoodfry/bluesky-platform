@@ -1,0 +1,19 @@
+# docker build -t playw -f Dockerfile.playwright .
+# docker run -it -v /tmp/.X11-unix:/tmp/.X11-unix --rm --ipc=host mcr.microsoft.com/playwright:v1.49.0-noble /bin/bash
+# docker run -it -v /tmp/.X11-unix:/tmp/.X11-unix --rm --ipc=host playw ipython
+FROM mcr.microsoft.com/playwright:v1.49.0-noble-arm64
+
+ARG VENV_PATH=/opt/venv
+
+RUN apt-get update -y && \
+    apt-get install -y python3.12-venv
+
+WORKDIR /src
+RUN python3 -m venv ${VENV_PATH} && \
+    ${VENV_PATH}/bin/pip install playwright==1.49.0 && \
+    ${VENV_PATH}/bin/pip install ipython nest_asyncio
+
+ENV PATH=${VENV_PATH}/bin:${PATH}
+
+# source ./venv/bin/activate
+# pip install playwright==1.49.0
