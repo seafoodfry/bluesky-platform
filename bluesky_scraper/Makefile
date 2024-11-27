@@ -1,6 +1,10 @@
 POETRY := ~/.poetry/bin/poetry
 PACKAGE_NAME := scraper_bluesky
 IMG := scraper
+CONATINER_OPTS := --ipc=host \
+	-v /tmp/.X11-unix:/tmp/.X11-unix \
+	--user pwuser \
+	--security-opt seccomp=seccomp_profile.json \
 
 
 .DEFAULT_GOAL := help
@@ -12,11 +16,11 @@ help:  ## Display this help message
 ##@ Local Development.
 .PHONY: build-dev
 build-dev:  ## Build the dev container image
-	docker build --target builder -t $(IMG)-dev .
+	docker build -t $(IMG)-dev -f Dockerfile.playwright .
 
 .PHONY: debug
 debug: build-dev  ## Run the dev container
-	docker run -it $(IMG)-dev bash
+	docker run -it $(CONATINER_OPTS) $(IMG)-dev bash
 
 .PHONY: build
 build:  ## Build the prod container image
@@ -24,7 +28,7 @@ build:  ## Build the prod container image
 
 .PHONY: run
 run: build  ## Run the prod container
-	docker run -it $(IMG)
+	docker run -it $(CONATINER_OPTS) $(IMG)
 
 
 ##@ QSource Code Management.
