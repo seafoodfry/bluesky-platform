@@ -32,6 +32,21 @@ visible_text = page.locator("body").inner_text()
 visible_text.index('sometext')
 visible_text.count('\n\u202a')
 
+# Get the first username.
+page.wait_for_selector('span.css-1jxf684')
+username = page.locator('span.css-1jxf684').nth(0).inner_text().strip()
+
+# Grab posts.
+post_containers = page.locator('div.css-175oi2r.r-13awgt0')
+post_containers.count()  # can be something like ~50.
+container = post_containers.nth(0)
+
+# Even values are usernames, odd values are handles.
+username = container.locator('span.css-1jxf684').nth(0).inner_text().strip()
+handle = container.locator('span.css-1jxf684').nth(1).inner_text().strip()
+txt = container.locator('div[data-testid="postText"]').nth(0).inner_text().strip()
+container.locator('css-175oi2r r-1awozwy r-18u37iz r-1w6e6rj r-1udh08x r-l4nmg1').nth(0).inner_text().strip()
+
 browser.close()
 pw.stop()
 ```
