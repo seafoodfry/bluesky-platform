@@ -76,5 +76,6 @@ qa-test: lint type-check test security  ## Run all quality assurance checks exce
 ##@ Development Cleanup.
 .PHONY: clean
 clean:  ## RDelete artifact files that were created by running 'make qa'
+	rm -f ./screenshots/*
 	find . \( -name '*.pyc' -o -name '__pycache__' \) -not -path './.venv/*' -print
 	find . \( -name '*.pyc' -o -name '__pycache__' \) -not -path './.venv/*' -print | xargs rm -rf
