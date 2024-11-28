@@ -1,11 +1,18 @@
 # Bluesky Scraper
 
+## Running
+
+```
+make run
+```
+
 ## Exploration
 
 ```
-docker build -t playw -f Dockerfile.playwright .
+make debug
 ```
 
+The above command will now run something like this:
 ```
 xhost +localhost
 
@@ -16,6 +23,8 @@ docker run -it \
     -e DISPLAY=host.docker.internal:0 \
     --rm --ipc=host playw ipython
 ```
+
+Once you get that container running you can execute code like the following:
 
 ```python
  # This is needed to use sync API in repl.
