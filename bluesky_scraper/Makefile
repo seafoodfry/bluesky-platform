@@ -1,6 +1,13 @@
 POETRY := ~/.poetry/bin/poetry
 PACKAGE_NAME := scraper_bluesky
 IMG := scraper
+CONATINER_OPTS := --rm \
+	-v ./screenshots:/home/pwuser/src/screenshots \
+	-v /tmp/.X11-unix:/tmp/.X11-unix \
+	-e DISPLAY=host.docker.internal:0 \
+	--ipc=host \
+	--user pwuser \
+	--security-opt seccomp=seccomp_profile.json \
 
 
 .DEFAULT_GOAL := help
@@ -12,11 +19,13 @@ help:  ## Display this help message
 ##@ Local Development.
 .PHONY: build-dev
 build-dev:  ## Build the dev container image
-	docker build --target builder -t $(IMG)-dev .
+	docker build -t $(IMG)-dev -f Dockerfile.playwright .
 
 .PHONY: debug
 debug: build-dev  ## Run the dev container
-	docker run -it $(IMG)-dev bash
+	xhost +localhost
+	export DISPLAY=host.docker.internal:0
+	docker run -it $(CONATINER_OPTS) $(IMG)-dev ipython
 
 .PHONY: build
 build:  ## Build the prod container image
@@ -24,7 +33,7 @@ build:  ## Build the prod container image
 
 .PHONY: run
 run: build  ## Run the prod container
-	docker run -it $(IMG)
+	docker run -it $(CONATINER_OPTS) $(IMG)
 
 
 ##@ QSource Code Management.
@@ -67,5 +76,6 @@ qa-test: lint type-check test security  ## Run all quality assurance checks exce
 ##@ Development Cleanup.
 .PHONY: clean
 clean:  ## RDelete artifact files that were created by running 'make qa'
+	rm -f ./screenshots/*
 	find . \( -name '*.pyc' -o -name '__pycache__' \) -not -path './.venv/*' -print
 	find . \( -name '*.pyc' -o -name '__pycache__' \) -not -path './.venv/*' -print | xargs rm -rf

@@ -14,7 +14,7 @@ scraper-bluesky = "scraper_bluesky.__main__:main"
 
 
 [tool.poetry.dependencies]
-python = "^3.13"
+python = "^3.12"
 playwright = "^1.49.0"
 
 

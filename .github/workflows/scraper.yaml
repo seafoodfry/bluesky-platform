@@ -23,9 +23,9 @@ jobs:
           $POETRY_HOME/bin/pip install poetry==1.8.4
           $POETRY --version
       - name: Install dependencies
-        working-directory: ./scraper
+        working-directory: ./bluesky_scraper
         run: |
           $POETRY install
       - name: QA Test
-        working-directory: ./scraper
+        working-directory: ./bluesky_scraper
         run: make qa-test POETRY=$POETRY
