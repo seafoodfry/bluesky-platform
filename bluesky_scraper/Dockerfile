@@ -4,19 +4,19 @@
 # docker run -it --rm --ipc=host --user pwuser --security-opt seccomp=seccomp_profile.json playw /bin/bash
 FROM mcr.microsoft.com/playwright:v1.49.0-noble-arm64
 
-ARG NB_USER="jovyan"
+ARG NB_USER="pwuser"
 ARG NB_UID="1001"
 ARG VENV_PATH=/opt/venv
 
 RUN apt-get update -y && \
     apt-get install -y python3.12-venv
 
-WORKDIR /src
-RUN python3 -m venv ${VENV_PATH} && \
-    ${VENV_PATH}/bin/pip install playwright==1.49.0 && \
-    ${VENV_PATH}/bin/pip install ipython nest_asyncio
+# WORKDIR /src
+# RUN python3 -m venv ${VENV_PATH} && \
+#     ${VENV_PATH}/bin/pip install playwright==1.49.0 && \
+#     ${VENV_PATH}/bin/pip install ipython nest_asyncio
 
-ENV PATH=${VENV_PATH}/bin:${PATH}
+# ENV PATH=${VENV_PATH}/bin:${PATH}
 
 ##############################
 ### Non-Root Configuration ###
@@ -51,6 +51,6 @@ RUN poetry install --no-interaction --no-ansi --only main
 
 COPY scraper_bluesky/ ./scraper_bluesky
 
-RUN poetry install --no-interaction --no-ansi --only main
+RUN poetry install --no-interaction --no-ansi --only main && mkdir ./scrrenshots
 
 CMD ["poetry", "run",  "python",  "-m", "scraper_bluesky"]

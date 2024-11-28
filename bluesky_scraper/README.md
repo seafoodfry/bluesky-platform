@@ -7,9 +7,9 @@ docker build -t playw -f Dockerfile.playwright .
 ```
 
 ```
-xhost +localhost 
+xhost +localhost
 
-export DISPLAY=host.docker.internal:0 
+export DISPLAY=host.docker.internal:0
 
 docker run -it \
     -v /tmp/.X11-unix:/tmp/.X11-unix \

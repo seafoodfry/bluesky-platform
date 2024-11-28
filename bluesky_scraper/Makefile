@@ -1,8 +1,11 @@
 POETRY := ~/.poetry/bin/poetry
 PACKAGE_NAME := scraper_bluesky
 IMG := scraper
-CONATINER_OPTS := --ipc=host \
+CONATINER_OPTS := --rm \
+	-v ./screenshots:/home/pwuser/src/screenshots \
 	-v /tmp/.X11-unix:/tmp/.X11-unix \
+	-e DISPLAY=host.docker.internal:0 \
+	--ipc=host \
 	--user pwuser \
 	--security-opt seccomp=seccomp_profile.json \
 
@@ -20,7 +23,9 @@ build-dev:  ## Build the dev container image
 
 .PHONY: debug
 debug: build-dev  ## Run the dev container
-	docker run -it $(CONATINER_OPTS) $(IMG)-dev bash
+	xhost +localhost
+	export DISPLAY=host.docker.internal:0
+	docker run -it $(CONATINER_OPTS) $(IMG)-dev ipython
 
 .PHONY: build
 build:  ## Build the prod container image
