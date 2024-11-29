@@ -23,7 +23,7 @@ async def get_first_child(element: Tag) -> Optional[Tag]:
 @span_name()
 async def extract_post_data(post: Tag) -> Optional[Tuple[str, str, str]]:
     """Extract username, handle and content from a post."""
-    # First get the post content structure
+    # First get the post content structure.
     post_div = post.find("div", class_="css-175oi2r r-18u37iz r-1cvj4g8")
     if not isinstance(post_div, Tag):
         raise Exception("Error finding first div")
@@ -31,17 +31,17 @@ async def extract_post_data(post: Tag) -> Optional[Tuple[str, str, str]]:
     if not isinstance(content_div, Tag):
         raise Exception("Error finding subsequent div")
 
-    # Get all direct children, similar to your original post.locator("> *")
+    # Get all direct children, similar to post.locator("> *").
     children = [
         c for c in content_div.children if isinstance(c, Tag)
-    ]  # Only elements, no text nodes
+    ]
 
-    # Verify we have 3 children as expected
+    # Verify we have 3 children as expected.
     children_count = len(children)
     if children_count != 3:
         raise Exception(f"Post should have 3 children, but has {children_count}")
 
-    # Handle user section (first child)
+    # Handle user section (first child).
     child = await get_first_child(children[0])
     if not child:
         raise Exception("Failed to get first child")
@@ -54,19 +54,19 @@ async def extract_post_data(post: Tag) -> Optional[Tuple[str, str, str]]:
     if not child:
         raise Exception("Failed to get third child")
 
-    # Get the username and handle links
+    # Get the username and handle links.
     links = [anchor for anchor in child.find_all("a", recursive=False)]
     if len(links) != 2:
         raise Exception(f"Expected 2 links for username/handle, found {len(links)}")
 
-    # Extract username and handle
+    # Extract username and handle.
     username = links[0].get_text()
     username = username.translate(RM_CHARS).strip()
 
     handle = links[1].get_text()
     handle = handle.translate(RM_CHARS).strip()
 
-    # Get post content using the second child, just like your original
+    # Get post content using the second child.
     first_child = await get_first_child(children[1])
     if not first_child:
         raise Exception("Failed to get content section")
@@ -81,17 +81,17 @@ async def scrape_posts(page: Page):
     p_span = trace.get_current_span()
 
     print("waiting for page to load...")
-    # Wait for page load with generous timeouts
+    # Wait for page load with generous timeouts.
     with tracer.start_as_current_span(get_span_name("wait_until_domcontentloaded")):
         await page.wait_for_load_state("domcontentloaded")
 
-    # Wait for feed container
+    # Wait for feed container.
     with tracer.start_as_current_span(get_span_name("wait_for_selector")):
         feed_selector = "div.css-175oi2r"
         await page.wait_for_selector(feed_selector, state="visible", timeout=30000)
         print("page loaded!")
 
-    # Wait for posts to be visible
+    # Wait for posts to be visible.
     with tracer.start_as_current_span(get_span_name("wait_for_selector")):
         posts_selector = "> div > div.css-175oi2r.r-1loqt21.r-1otgn73 > div.css-175oi2r.r-1loqt21.r-1hfyk0a.r-ry3cjt"
         await page.wait_for_selector(
@@ -114,7 +114,7 @@ async def scrape_posts(page: Page):
         await take_debug_screenshots(page, "no_posts")
         return
 
-    # Process each post using your familiar extraction function
+    # Process each post using your familiar extraction function.
     for i, post in enumerate(posts):
         post_data = await extract_post_data(post)
         if post_data:
