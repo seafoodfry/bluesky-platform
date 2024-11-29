@@ -5,10 +5,14 @@
 
 We tried grafana cloud.
 It wasn't good.
-It suffers from a similar issue as datadog: getting started once the data is in the vendor is to irksome and once you do
-figure out how to use the data, you have to create separate visualizations to understand your app.
-This limits one's capacities to explore the data as compared to honeycomb where using the data and the visualizations are
-already figured out and ready to be used so that user's just need to mix and match to understand what is going on.
+It suffers from a similar issue as datadog: getting started once the data is in the vendor is too irksome. Figuring out how to use the data for visualizations is too complicated.
+Because of that, most of your concentration goes into the data schema instead of the important details.
+On top of that, you have to work your way through every single question you may have by creating a completely separate and disparate query.
+
+This UX makes people "experts in vendor X" instead of "experts in their app" - limits one's capacities to explore the data. 
+Compare this to honeycomb where using the data via queries is and visualizations is all
+figured out.
+So you just need to start clicking through it to find the data you need.
 
 
 ---
