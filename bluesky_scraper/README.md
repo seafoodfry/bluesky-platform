@@ -100,7 +100,22 @@ browser.close()
 pw.stop()
 ```
 
-References:
+---
+
+# Design
+
+We use playwright to navigate to a page and then dump the HTML to beautifulsoup.
+We used to use playwright for everythign but even with all the asyncs it still took too much time (relatively speaking).
+
+This is what execution with just async and playwright looked like
+![before](./docs/001-bs4-before.png)
+
+This is what it looked like when we dumped the page's content into beautifulsoup and continued the parsing there
+![after](./docs/001-bs4-after.png)
+
+---
+
+# References
 
 1. https://scrapfly.io/blog/web-scraping-with-playwright-and-python/
 1. https://playwright.dev/python/docs/library

@@ -25,6 +25,27 @@ toml = ["tomli (>=1.1.0)"]
 yaml = ["PyYAML"]
 
 [[package]]
+name = "beautifulsoup4"
+version = "4.12.3"
+description = "Screen-scraping library"
+optional = false
+python-versions = ">=3.6.0"
+files = [
+    {file = "beautifulsoup4-4.12.3-py3-none-any.whl", hash = "sha256:b80878c9f40111313e55da8ba20bdba06d8fa3969fc68304167741bbf9e082ed"},
+    {file = "beautifulsoup4-4.12.3.tar.gz", hash = "sha256:74e3d1928edc070d21748185c46e3fb33490f22f52a3addee9aee0f4f7781051"},
+]
+
+[package.dependencies]
+soupsieve = ">1.2"
+
+[package.extras]
+cchardet = ["cchardet"]
+chardet = ["chardet"]
+charset-normalizer = ["charset-normalizer"]
+html5lib = ["html5lib"]
+lxml = ["lxml"]
+
+[[package]]
 name = "boolean-py"
 version = "4.0"
 description = "Define boolean algebras, create and parse boolean expressions and create custom boolean DSL."
@@ -1450,6 +1471,17 @@ files = [
 ]
 
 [[package]]
+name = "soupsieve"
+version = "2.6"
+description = "A modern CSS selector implementation for Beautiful Soup."
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "soupsieve-2.6-py3-none-any.whl", hash = "sha256:e72c4ff06e4fb6e4b5a9f0f55fe6e81514581fca1515028625d0f299c602ccc9"},
+    {file = "soupsieve-2.6.tar.gz", hash = "sha256:e2e68417777af359ec65daac1057404a3c8a5455bb8abc36f1a9866ab1a51abb"},
+]
+
+[[package]]
 name = "stevedore"
 version = "5.4.0"
 description = "Manage dynamic plugins for Python applications"
@@ -1472,6 +1504,31 @@ python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
 files = [
     {file = "toml-0.10.2-py2.py3-none-any.whl", hash = "sha256:806143ae5bfb6a3c6e736a764057db0e6a0e05e338b5630894a5f779cabb4f9b"},
     {file = "toml-0.10.2.tar.gz", hash = "sha256:b3bda1d108d5dd99f4a20d24d9c348e91c4db7ab1b749200bded2f839ccbe68f"},
+]
+
+[[package]]
+name = "types-beautifulsoup4"
+version = "4.12.0.20241020"
+description = "Typing stubs for beautifulsoup4"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "types-beautifulsoup4-4.12.0.20241020.tar.gz", hash = "sha256:158370d08d0cd448bd11b132a50ff5279237a5d4b5837beba074de152a513059"},
+    {file = "types_beautifulsoup4-4.12.0.20241020-py3-none-any.whl", hash = "sha256:c95e66ce15a4f5f0835f7fbc5cd886321ae8294f977c495424eaf4225307fd30"},
+]
+
+[package.dependencies]
+types-html5lib = "*"
+
+[[package]]
+name = "types-html5lib"
+version = "1.1.11.20241018"
+description = "Typing stubs for html5lib"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "types-html5lib-1.1.11.20241018.tar.gz", hash = "sha256:98042555ff78d9e3a51c77c918b1041acbb7eb6c405408d8a9e150ff5beccafa"},
+    {file = "types_html5lib-1.1.11.20241018-py3-none-any.whl", hash = "sha256:3f1e064d9ed2c289001ae6392c84c93833abb0816165c6ff0abfc304a779f403"},
 ]
 
 [[package]]
@@ -1609,4 +1666,4 @@ type = ["pytest-mypy"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "847e4f66ef5c708f9f364de35648443af0bdd3a99f5f6df5caa12c191152640c"
+content-hash = "eb4217974a0006aff3f563b51b28e74996c810320b34e22b83cf9dda74b06c57"

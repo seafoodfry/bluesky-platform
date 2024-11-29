@@ -2,7 +2,8 @@ import asyncio
 import logging
 from playwright.async_api import async_playwright, Playwright
 
-from scraper_bluesky.scraper import get_page_title, scrape_posts
+from scraper_bluesky.scraper import get_page_title  # , scrape_posts
+from scraper_bluesky.scraper_bs4 import scrape_posts as bs4_scrape_posts
 from scraper_bluesky.screenshots import take_debug_screenshots
 
 from opentelemetry import trace
@@ -115,7 +116,7 @@ async def run(playwright: Playwright):
         await get_page_title(page)
 
         # Scrape posts.
-        await scrape_posts(page)
+        await bs4_scrape_posts(page)
     except Exception as e:
         print(f"Fatal error in scraping run: {e}")
         if browser:
