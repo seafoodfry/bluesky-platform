@@ -74,20 +74,21 @@ But this feature is meant to help us test better in production.
 
 ## Graduation Criteria
 
-- [ ] document how to use otel with asyncio
-- [ ] instrument scrapers
+- [x] document how to use otel with asyncio: turns out it works just as one would want it.
+- [x] instrument scrapers
 - [ ] document how to use different sampling methods
 
 ---
 # Production Readiness
 
-- [ ] at least one scraper is instrumented
-- [ ] come up with a good pattern to jot down findings
+- [x] at least one scraper is instrumented
+- [x] come up with a good pattern to jot down findings: in the app's readme.
 
 ---
 # Implementation History
 
 - [./app](./app/) has the basic of how to instrument a container to send traces
+- https://github.com/seafoodfry/bluesky-platform/pull/7 added some good utilities for tracing
 
 ---
 # Drawbacks
