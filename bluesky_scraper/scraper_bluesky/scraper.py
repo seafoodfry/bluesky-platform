@@ -1,12 +1,15 @@
 from playwright.async_api import Page, Locator
 from typing import Optional, Tuple  # For better type hints
+from opentelemetry import trace
 
 from scraper_bluesky.screenshots import take_debug_screenshots
 
+tracer = trace.get_tracer("bluesky")
 
 RM_CHARS = {ord("\u202a"): None, ord("\u202c"): None, ord("\xa0"): None}
 
 
+@tracer.start_as_current_span("scraper.get_page_title")
 async def get_page_title(page: Page):
     """
     Scrapes and prints the page title.
@@ -16,6 +19,7 @@ async def get_page_title(page: Page):
     return title
 
 
+@tracer.start_as_current_span("scraper.get_first_child")
 async def get_first_child(locator: Locator) -> Optional[Locator]:
     """Get first child of a locator safely."""
     try:
@@ -26,6 +30,7 @@ async def get_first_child(locator: Locator) -> Optional[Locator]:
         return None
 
 
+@tracer.start_as_current_span("scraper.extract_post_data")
 async def extract_post_data(post: Locator) -> Optional[Tuple[str, str, str]]:
     """Extract username, handle and content from a post."""
     # First get the post content structure
@@ -74,25 +79,36 @@ async def extract_post_data(post: Locator) -> Optional[Tuple[str, str, str]]:
     return username, handle, content_text
 
 
+@tracer.start_as_current_span("scraper.scrape_posts")
 async def scrape_posts(page: Page):
     """Scrape posts from homepage."""
+    p_span = trace.get_current_span()
+
     print("waiting for page to load...")
     # Wait for page load with generous timeouts
-    await page.wait_for_load_state("domcontentloaded")
-    await page.wait_for_timeout(5000)  # Initial wait
+
+    with tracer.start_as_current_span("run.wait_until_domcontentloaded"):
+        await page.wait_for_load_state("domcontentloaded")
+
+    await page.wait_for_timeout(3_000)
 
     # Wait for feed container.
-    feed_selector = "div.css-175oi2r"
-    await page.wait_for_selector(feed_selector, state="visible", timeout=30000)
-    print("page loaded!")
+    with tracer.start_as_current_span("scraper.scrape_posts.wait_for_selector"):
+        feed_selector = "div.css-175oi2r"
+        await page.wait_for_selector(feed_selector, state="visible", timeout=30000)
+        print("page loaded!")
 
-    # Get posts with explicit waits
-    posts_selector = "> div > div.css-175oi2r.r-1loqt21.r-1otgn73 > div.css-175oi2r.r-1loqt21.r-1hfyk0a.r-ry3cjt"
-    await page.wait_for_selector(feed_selector + " " + posts_selector, timeout=10000)
+    # Get posts with explicit waits.
+    with tracer.start_as_current_span("scraper.scrape_posts.wait_for_selector"):
+        posts_selector = "> div > div.css-175oi2r.r-1loqt21.r-1otgn73 > div.css-175oi2r.r-1loqt21.r-1hfyk0a.r-ry3cjt"
+        await page.wait_for_selector(
+            feed_selector + " " + posts_selector, timeout=10000
+        )
 
     posts = page.locator(feed_selector).locator(posts_selector)
     post_count = await posts.count()
     print(f"Number of posts found: {post_count}")
+    p_span.set_attribute("posts_count", post_count)
 
     if post_count < 1:
         print("No posts found - taking debug screenshots")

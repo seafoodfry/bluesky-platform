@@ -5,6 +5,10 @@ CONATINER_OPTS := --rm \
 	-v ./screenshots:/home/pwuser/src/screenshots \
 	-v /tmp/.X11-unix:/tmp/.X11-unix \
 	-e DISPLAY=host.docker.internal:0 \
+	-e OTEL_SERVICE_NAME="scraper" \
+	-e OTEL_EXPORTER_OTLP_ENDPOINT="https://api.honeycomb.io" \
+	-e OTEL_EXPORTER_OTLP_PROTOCOL="http/protobuf" \
+	-e OTEL_EXPORTER_OTLP_HEADERS="x-honeycomb-team=$$(op read 'op://eng-vault/honeycomb-api-key/password')"
 	--ipc=host \
 	--user pwuser \
 	--security-opt seccomp=seccomp_profile.json \
