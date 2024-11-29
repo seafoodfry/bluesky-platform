@@ -1,7 +1,12 @@
 from datetime import datetime
 from playwright.async_api import Page
+from opentelemetry import trace
 
 
+tracer = trace.get_tracer("bluesky")
+
+
+@tracer.start_as_current_span("take_debug_screenshots")
 async def take_debug_screenshots(page: Page, reason: str = "error") -> None:
     """Take debug screenshots and save HTML."""
     try:

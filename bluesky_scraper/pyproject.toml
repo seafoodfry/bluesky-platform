@@ -16,6 +16,23 @@ scraper-bluesky = "scraper_bluesky.__main__:main"
 [tool.poetry.dependencies]
 python = "^3.12"
 playwright = "^1.49.0"
+opentelemetry-instrumentation = "^0.49b2"
+opentelemetry-distro = "^0.49b2"
+opentelemetry-exporter-otlp = "^1.28.2"
+opentelemetry-instrumentation-asyncio = "^0.49b2"
+opentelemetry-instrumentation-dbapi = "^0.49b2"
+opentelemetry-instrumentation-logging = "^0.49b2"
+opentelemetry-instrumentation-sqlite3 = "^0.49b2"
+opentelemetry-instrumentation-threading = "^0.49b2"
+opentelemetry-instrumentation-urllib = "^0.49b2"
+opentelemetry-instrumentation-wsgi = "^0.49b2"
+opentelemetry-instrumentation-grpc = "^0.49b2"
+opentelemetry-instrumentation-requests = "^0.49b2"
+opentelemetry-instrumentation-urllib3 = "^0.49b2"
+opentelemetry-api = "^1.28.2"
+opentelemetry-processor-baggage = "^0.49b2"
+beautifulsoup4 = "^4.12.3"
+types-beautifulsoup4 = "^4.12.0.20241020"
 
 
 [tool.poetry.group.dev.dependencies]

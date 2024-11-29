@@ -53,4 +53,4 @@ COPY scraper_bluesky/ ./scraper_bluesky
 
 RUN poetry install --no-interaction --no-ansi --only main && mkdir ./scrrenshots
 
-CMD ["poetry", "run",  "python",  "-m", "scraper_bluesky"]
+CMD ["poetry", "run", "opentelemetry-instrument", "python",  "-m", "scraper_bluesky"]
