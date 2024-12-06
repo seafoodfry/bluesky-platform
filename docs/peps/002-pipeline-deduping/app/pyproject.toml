@@ -1,0 +1,14 @@
+[tool.poetry]
+name = "app"
+version = "0.1.0"
+description = ""
+authors = ["seafoodfry <99568361+seafoodfry@users.noreply.github.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.13"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
