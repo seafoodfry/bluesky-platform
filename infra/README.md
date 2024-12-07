@@ -1,5 +1,6 @@
 # Infra
 
+## Usage
 
 Commands to get things up and running
 ```
@@ -12,14 +13,26 @@ Commands to get things up and running
 ./run-cmd-in-shell.sh terraform apply a.plan
 ```
 
+Once you got the cluster running, get your kubeconfig:
 ```
 ./run-cmd-in-shell.sh aws eks update-kubeconfig --region us-east-1 --name platform
 ```
 
 To clean up
 ```
+. ./setup_env_vars.sh
+
 ./run-cmd-in-shell.sh terraform destroy -auto-approve
 ```
+
+### Shells
+
+The script `./run-cmd-in-shell.sh` will run one command per invokation.
+We created
+- [`exec-shell-with-envvars.sh`](./exec-shell-with-envvars.sh) to be executed as `./exec-shell-with-envvars.sh` and provide a brand new shell to run multiple commands under the same temporary STS role creds.
+- [`source-envars-for-shell.sh`](./source-envars-for-shell.sh) to be executed as `. ./source-envars-for-shell.sh` to source the necessary env vars to run AWS commands under a temporary STS session.
+    - If you installed the [AWS CLI 1Password plugin](https://developer.1password.com/docs/cli/shell-plugins/aws/) you'll need to uncomment the line in your `~/.zshrc` or `~/.bashrc` file where you first source `~/.config/op/plugins.sh`. Otherwise the AWS cli will always be picking up the default IAM user you set it up with.
+    - We discovered this thanks to `aws configure list`.
 
 ---
 # EBS CSI Driver

@@ -50,7 +50,7 @@ module "eks" {
 
   }
 
-  cluster_endpoint_public_access       = false
+  cluster_endpoint_public_access       = true
   cluster_endpoint_public_access_cidrs = ["${var.my_ip}/32"]
   cluster_endpoint_private_access      = true
 
