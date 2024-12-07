@@ -19,11 +19,11 @@ terraform {
 # Spot costs https://aws.amazon.com/ec2/spot/pricing/
 
 provider "aws" {
-  alias = "us_east_1"
+  #alias  = "us_east_1"
   region = "us-east-1"
 }
 
 provider "aws" {
-  #alias = "us_east_2"
+  alias  = "us_east_2"
   region = "us-east-2"
 }
