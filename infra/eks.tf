@@ -6,20 +6,43 @@ module "eks" {
   cluster_name    = "platform"
   cluster_version = "1.31"
 
+  cluster_upgrade_policy = {
+    upgrade_policy = {
+      support_type = "STANDARD"
+    }
+  }
+
   bootstrap_self_managed_addons = true
   cluster_addons = {
     coredns = {
-      most_recent = true
+      most_recent                 = true
+      resolve_conflicts_on_create = "OVERWRITE"
+      resolve_conflicts_on_update = "OVERWRITE"
+      timeouts = {
+        create = "3m" # Shorter timeout.
+      }
     }
     eks-pod-identity-agent = {
-      most_recent = true
+      most_recent                 = true
+      resolve_conflicts_on_create = "OVERWRITE"
+      resolve_conflicts_on_update = "OVERWRITE"
     }
     kube-proxy = {
-      most_recent = true
+      most_recent                 = true
+      resolve_conflicts_on_create = "OVERWRITE"
+      resolve_conflicts_on_update = "OVERWRITE"
     }
     vpc-cni = {
-      most_recent = true
+      most_recent                 = true
+      resolve_conflicts_on_create = "OVERWRITE"
+      resolve_conflicts_on_update = "OVERWRITE"
     }
+    # ebs_csi_driver = {
+    #   most_recent = true
+    # }
+    # csi_snapshot_controller = {
+    #     most_recent = true
+    # }
   }
 
   cluster_endpoint_public_access       = false
