@@ -3,6 +3,8 @@ terraform {
     bucket = "seafoodfry-tf-backend"
     key    = "bluesky-platform"
     region = "us-east-2"
+    dynamodb_table = "terraform-state-lock"
+    encrypt        = true
   }
 
   required_providers {
@@ -27,3 +29,14 @@ provider "aws" {
   alias  = "us_east_2"
   region = "us-east-2"
 }
+
+# resource "aws_dynamodb_table" "terraform_lock" {
+#   name           = "terraform-state-lock"
+#   billing_mode   = "PAY_PER_REQUEST"
+#   hash_key       = "LockID"
+
+#   attribute {
+#     name = "LockID"
+#     type = "S"
+#   }
+# }
