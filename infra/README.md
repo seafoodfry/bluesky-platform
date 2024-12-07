@@ -12,6 +12,10 @@ Commands to get things up and running
 ./run-cmd-in-shell.sh terraform apply a.plan
 ```
 
+```
+./run-cmd-in-shell.sh aws eks update-kubeconfig --region us-east-1 --name platform
+```
+
 To clean up
 ```
 ./run-cmd-in-shell.sh terraform destroy -auto-approve

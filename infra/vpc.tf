@@ -43,7 +43,8 @@ HostMax:   10.0.1.254           00001010.00000000.00000001. 11111110
 Broadcast: 10.0.1.255           00001010.00000000.00000001. 11111111
 Hosts/Net: 254                   Class A, Private Internet */
 module "vpc" {
-  source = "terraform-aws-modules/vpc/aws"
+  source  = "terraform-aws-modules/vpc/aws"
+  version = "~> 5.16"
 
   name = "platform"
   cidr = "10.0.0.0/16"

@@ -1,15 +1,13 @@
 # https://github.com/terraform-aws-modules/terraform-aws-eks
 module "eks" {
-  source = "terraform-aws-modules/eks/aws"
-  #version = "~> 20.31"
+  source  = "terraform-aws-modules/eks/aws"
+  version = "~> 20.31"
 
   cluster_name    = "platform"
   cluster_version = "1.31"
 
   cluster_upgrade_policy = {
-    upgrade_policy = {
-      support_type = "STANDARD"
-    }
+    support_type = "STANDARD"
   }
 
   bootstrap_self_managed_addons = true
@@ -37,12 +35,19 @@ module "eks" {
       resolve_conflicts_on_create = "OVERWRITE"
       resolve_conflicts_on_update = "OVERWRITE"
     }
-    # ebs_csi_driver = {
-    #   most_recent = true
-    # }
-    # csi_snapshot_controller = {
-    #     most_recent = true
-    # }
+    aws-ebs-csi-driver = {
+      most_recent                 = true
+      resolve_conflicts_on_create = "OVERWRITE"
+      resolve_conflicts_on_update = "OVERWRITE"
+      service_account_role_arn    = aws_iam_role.ebs_csi_controller.arn
+    }
+
+    snapshot-controller = {
+      most_recent                 = true
+      resolve_conflicts_on_create = "OVERWRITE"
+      resolve_conflicts_on_update = "OVERWRITE"
+    }
+
   }
 
   cluster_endpoint_public_access       = false
