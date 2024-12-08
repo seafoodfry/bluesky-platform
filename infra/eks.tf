@@ -102,7 +102,7 @@ module "eks" {
       # Ay addon that requires its own nodes WILL ask for a node with these taints.
       min_size     = 1
       max_size     = 3
-      desired_size = 1 #2 # Karpenter controller redundancy.
+      desired_size = 2 # Karpenter controller redundancy.
 
       taints = {
         # This Taint aims to keep just EKS Addons and Karpenter running on this MNG
@@ -137,5 +137,22 @@ module "eks" {
       }
       enable_capacity_rebalancing = true
     }
+  }
+}
+
+module "karpenter" {
+  source  = "terraform-aws-modules/eks/aws//modules/karpenter"
+  version = "~> 20.31"
+
+  cluster_name = module.eks.cluster_name
+
+  # Attach additional IAM policies to the Karpenter node IAM role.
+  node_iam_role_additional_policies = {
+    AmazonSSMManagedInstanceCore = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+  }
+
+  tags = {
+    Environment = "dev"
+    Terraform   = "true"
   }
 }
