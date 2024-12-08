@@ -1,0 +1,9 @@
+# Registry: https://hub.docker.com/r/valkey/valkey/
+# Github: https://github.com/valkey-io/valkey
+# Image source: https://github.com/valkey-io/valkey-container
+FROM valkey/valkey:8-bookworm
+
+COPY valkey.conf /usr/local/etc/valkey/valkey.conf
+
+VOLUME /data
+CMD ["valkey-server", "/usr/local/etc/valkey/valkey.conf"]

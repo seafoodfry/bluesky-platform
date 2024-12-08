@@ -72,6 +72,22 @@ resource "aws_elasticache_serverless_cache" "valkey" {
 
 https://valkey.io/topics/quickstart/
 
+## Valeky Tutorial
+
+```
+$ docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' valkey-server
+172.18.0.2
+```
+
+```
+root@262b0071da20:/data# valkey-cli -h 172.18.0.2 INCR counter
+(integer) 1
+root@262b0071da20:/data# valkey-cli -h 172.18.0.2 INCR counter
+(integer) 2
+root@262b0071da20:/data# valkey-cli -h 172.18.0.2 INCR counter
+(integer) 3
+```
+
 ## Costs
 
 > You can further optimize costs on ElastiCache Serverless for Valkey with 33% lower pricing and 90% lower minimum data storage of 100 MB compared to other supported engines.

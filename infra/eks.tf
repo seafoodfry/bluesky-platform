@@ -98,6 +98,8 @@ module "eks" {
         "m6g.medium"  # ARM
       ]
 
+      # NOTE: do keep this with more than 1 node.
+      # Ay addon that requires its own nodes WILL ask for a node with these taints.
       min_size     = 1
       max_size     = 3
       desired_size = 2 # Karpenter controller redundancy.
@@ -126,7 +128,7 @@ module "eks" {
         "c6g.medium", # ARM
         "m6g.medium"  # ARM
       ]
-      min_size     = 1
+      min_size     = 2 # Needed when running flux.
       max_size     = 10
       desired_size = 1
 
@@ -135,5 +137,22 @@ module "eks" {
       }
       enable_capacity_rebalancing = true
     }
+  }
+}
+
+module "karpenter" {
+  source  = "terraform-aws-modules/eks/aws//modules/karpenter"
+  version = "~> 20.31"
+
+  cluster_name = module.eks.cluster_name
+
+  # Attach additional IAM policies to the Karpenter node IAM role.
+  node_iam_role_additional_policies = {
+    AmazonSSMManagedInstanceCore = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+  }
+
+  tags = {
+    Environment = "dev"
+    Terraform   = "true"
   }
 }
