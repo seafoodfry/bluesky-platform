@@ -98,9 +98,9 @@ module "eks" {
         "m6g.medium"  # ARM
       ]
 
-      min_size     = 1
+      min_size     = 0
       max_size     = 3
-      desired_size = 2 # Karpenter controller redundancy.
+      desired_size = 0 #2 # Karpenter controller redundancy.
 
       taints = {
         # This Taint aims to keep just EKS Addons and Karpenter running on this MNG
