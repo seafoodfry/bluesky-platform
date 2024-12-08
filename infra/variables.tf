@@ -22,3 +22,12 @@ variable "github_token" {
   type      = string
   sensitive = true
 }
+
+variable "gpg_key_id" {
+  type = string
+}
+
+variable "gpg_key_ring" {
+  type      = string
+  sensitive = true
+}

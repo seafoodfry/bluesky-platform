@@ -34,6 +34,61 @@ We created
     - If you installed the [AWS CLI 1Password plugin](https://developer.1password.com/docs/cli/shell-plugins/aws/) you'll need to uncomment the line in your `~/.zshrc` or `~/.bashrc` file where you first source `~/.config/op/plugins.sh`. Otherwise the AWS cli will always be picking up the default IAM user you set it up with.
     - We discovered this thanks to `aws configure list`.
 
+
+---
+# GPG Keys
+
+GitHub has these docs on how to do it
+[Generating a new GPG key](https://docs.github.com/en/authentication/managing-commit-signature-verification/generating-a-new-gpg-key).
+
+To create a key:
+```
+gpg --full-generate-key
+```
+
+Or in one go with:
+
+```
+gpg --batch --generate-key <<EOF
+Key-Type: EDDSA
+Key-Curve: ed25519
+Key-Usage: sign
+Name-Real: Flux
+Name-Comment: signing key
+Name-Email: 99568361+seafoodfry@users.noreply.github.com
+Expire-Date: 7d
+%no-protection
+EOF
+```
+
+You can list them by running:
+
+```
+gpg --list-secret-keys --keyid-format=long
+```
+
+and to delete them:
+
+```
+# You must delete the secret key first before you can delete the public key.
+
+gpg --delete-secret-key $KEY_ID
+
+gpg --delete-key $KEY_ID
+```
+
+Then you can get the public part by running:
+
+```
+gpg --armor --export $KEY_ID
+```
+
+And to get the key ring for TF:
+
+```
+gpg --export-secret-keys --armor $KEY_ID
+```
+
 ---
 # EBS CSI Driver
 
