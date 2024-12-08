@@ -98,9 +98,11 @@ module "eks" {
         "m6g.medium"  # ARM
       ]
 
-      min_size     = 0
+      # NOTE: do keep this with more than 1 node.
+      # Ay addon that requires its own nodes WILL ask for a node with these taints.
+      min_size     = 1
       max_size     = 3
-      desired_size = 0 #2 # Karpenter controller redundancy.
+      desired_size = 1 #2 # Karpenter controller redundancy.
 
       taints = {
         # This Taint aims to keep just EKS Addons and Karpenter running on this MNG
@@ -126,7 +128,7 @@ module "eks" {
         "c6g.medium", # ARM
         "m6g.medium"  # ARM
       ]
-      min_size     = 1
+      min_size     = 2 # Needed when running flux.
       max_size     = 10
       desired_size = 1
 

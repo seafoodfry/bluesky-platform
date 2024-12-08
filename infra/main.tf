@@ -1,8 +1,8 @@
 terraform {
   backend "s3" {
-    bucket = "seafoodfry-tf-backend"
-    key    = "bluesky-platform"
-    region = "us-east-2"
+    bucket         = "seafoodfry-tf-backend"
+    key            = "bluesky-platform"
+    region         = "us-east-2"
     dynamodb_table = "terraform-state-lock"
     encrypt        = true
   }
@@ -11,6 +11,11 @@ terraform {
     aws = {
       source  = "hashicorp/aws"
       version = "~> 5.76"
+    }
+    # https://registry.terraform.io/providers/fluxcd/flux/latest/docs
+    flux = {
+      source  = "fluxcd/flux"
+      version = "~> 1.4"
     }
   }
 
