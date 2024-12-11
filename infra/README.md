@@ -89,6 +89,33 @@ And to get the key ring for TF:
 gpg --export-secret-keys --armor $KEY_ID
 ```
 
+```
+$ gpg --export-secret-keys > ~/.gnupg/secring.gpg
+gpg: starting migration from earlier GnuPG versions
+gpg: porting secret keys from '/Users/username/.gnupg/secring.gpg' to gpg-agent
+gpg: migration succeeded
+```
+
+The key ID you need for flux must be the short ID:
+
+```
+# Another option. GitHub uses the long format.
+# gpg --list-secret-keys --keyid-format SHORT
+
+gpg --list-secret-keys --keyid-format LONG
+
+```
+
+Note that the key ID will be in this format
+```
+[keyboxd]
+---------
+sec   ed25519/<KEYID> 2024-12-11 [SC] [expires: 2024-12-18]
+      <FINGERPRINT>
+uid                 <OMMITTED>
+```
+So you want the thing after the algorithm, in this case, the thing after `ed25519`.
+
 ---
 # EBS CSI Driver
 
