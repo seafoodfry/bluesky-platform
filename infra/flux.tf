@@ -4,11 +4,14 @@ provider "flux" {
   }
   git = {
     url    = "https://github.com/seafoodfry/bluesky-platform"
-    branch = "valkey" # "main"
+    branch = var.git_branch
     http = {
       username = var.github_username
       password = var.github_token
     }
+    gpg_key_ring = var.gpg_key_ring
+    gpg_key_id   = var.gpg_key_id
+    author_email = var.github_email
   }
 }
 

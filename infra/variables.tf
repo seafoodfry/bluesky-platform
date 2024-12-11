@@ -14,11 +14,34 @@ variable "eks_access_iam_role" {
 }
 
 variable "github_username" {
-  type      = string
-  sensitive = true
+  type        = string
+  sensitive   = true
+  description = "Used by flux to authenticate"
 }
 
 variable "github_token" {
+  type        = string
+  sensitive   = true
+  description = "Used by flux to authenticate"
+}
+
+variable "github_email" {
+  type        = string
+  sensitive   = true
+  description = "Used by flux to generate signed commits"
+}
+
+variable "git_branch" {
+  type        = string
+  default     = "main"
+  description = "Used by flux to figure out what branch will drive deployments"
+}
+
+variable "gpg_key_id" {
+  type = string
+}
+
+variable "gpg_key_ring" {
   type      = string
   sensitive = true
 }
