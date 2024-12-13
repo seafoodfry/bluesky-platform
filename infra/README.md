@@ -141,6 +141,13 @@ kubectl get helmreleases -A
 ```
 
 ---
+# Interacting with Karpenter
+
+```
+kubectl -n kube-system logs -l app.kubernetes.io/name=karpenter -c controller 
+```
+
+---
 # Cloudtrail
 
 ```sql
