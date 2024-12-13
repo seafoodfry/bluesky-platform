@@ -1,9 +1,12 @@
 # https://github.com/terraform-aws-modules/terraform-aws-eks
+locals {
+  cluster_name = "platform"
+}
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "~> 20.31"
 
-  cluster_name    = "platform"
+  cluster_name    = local.cluster_name
   cluster_version = "1.31"
 
   cluster_upgrade_policy = {
@@ -83,6 +86,10 @@ module "eks" {
     }
   }
 
+  node_security_group_tags = {
+    "karpenter.sh/discovery" = local.cluster_name
+  }
+
   # Possible values:
   # "AL2_x86_64" "AL2_x86_64_GPU" "AL2_ARM_64" "CUSTOM" "BOTTLEROCKET_ARM_64" "BOTTLEROCKET_x86_64"
   # "BOTTLEROCKET_ARM_64_NVIDIA" "BOTTLEROCKET_x86_64_NVIDIA" "WINDOWS_CORE_2019_x86_64" "WINDOWS_FULL_2019_x86_64"
@@ -101,8 +108,8 @@ module "eks" {
       # NOTE: do keep this with more than 1 node.
       # Ay addon that requires its own nodes WILL ask for a node with these taints.
       min_size     = 1
-      max_size     = 3
-      desired_size = 2 # Karpenter controller redundancy.
+      max_size     = 5
+      desired_size = 3 # Karpenter controller redundancy + flux.
 
       taints = {
         # This Taint aims to keep just EKS Addons and Karpenter running on this MNG
@@ -120,23 +127,23 @@ module "eks" {
       enable_capacity_rebalancing = true
     }
 
-    apps = {
-      ami_type      = "AL2023_ARM_64_STANDARD"
-      capacity_type = "SPOT"
-      instance_types = [
-        "t4g.medium", # ARM
-        "c6g.medium", # ARM
-        "m6g.medium"  # ARM
-      ]
-      min_size     = 2 # Needed when running flux.
-      max_size     = 10
-      desired_size = 1
+    #   apps = {
+    #     ami_type      = "AL2023_ARM_64_STANDARD"
+    #     capacity_type = "SPOT"
+    #     instance_types = [
+    #       "t4g.medium", # ARM
+    #       "c6g.medium", # ARM
+    #       "m6g.medium"  # ARM
+    #     ]
+    #     min_size     = 2 # Needed when running flux.
+    #     max_size     = 10
+    #     desired_size = 2
 
-      update_config = {
-        max_unavailable_percentage = 33
-      }
-      enable_capacity_rebalancing = true
-    }
+    #     update_config = {
+    #       max_unavailable_percentage = 33
+    #     }
+    #     enable_capacity_rebalancing = true
+    #   }
   }
 }
 
@@ -145,6 +152,13 @@ module "karpenter" {
   version = "~> 20.31"
 
   cluster_name = module.eks.cluster_name
+
+  enable_pod_identity             = true
+  create_pod_identity_association = true
+
+  node_iam_role_use_name_prefix = false
+  namespace                     = "kube-system"
+  service_account               = "karpenter"
 
   # Attach additional IAM policies to the Karpenter node IAM role.
   node_iam_role_additional_policies = {
@@ -155,4 +169,8 @@ module "karpenter" {
     Environment = "dev"
     Terraform   = "true"
   }
+}
+
+output "karpenter_node_role" {
+  value = module.karpenter.node_iam_role_name
 }
