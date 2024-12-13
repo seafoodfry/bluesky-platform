@@ -130,7 +130,7 @@ module "eks" {
       ]
       min_size     = 2 # Needed when running flux.
       max_size     = 10
-      desired_size = 1
+      desired_size = 2
 
       update_config = {
         max_unavailable_percentage = 33

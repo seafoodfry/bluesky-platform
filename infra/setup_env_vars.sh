@@ -10,6 +10,10 @@ if [ ! -f "$GPG_FILE" ]; then
 fi
 
 if [ "$GPG_OK" = "1" ]; then
+    # If we don't move it out of ~/.gnupg TF will have issues reading the key ring 'cas of
+    # directory permissions.
+    mkdir -p /tmp/gpgkey/
+    cp "${GPG_FILE}" /tmp/gpgkey/secring.gpg
 
     export TF_VAR_my_ip=$(curl https://cloudflare.com/cdn-cgi/trace | grep ip | awk -F= '{print $2}')
     export TF_VAR_eks_access_iam_role=$(op run --no-masking --env-file=tf.env -- printenv ROLE)
@@ -21,7 +25,7 @@ if [ "$GPG_OK" = "1" ]; then
     export TF_VAR_gpg_key_id=$(op read "op://eng-vault/gpg-signing-key/key_id")
     # Make sure to run:
     # gpg --export-secret-keys > ~/.gnupg/secring.gpg
-    export TF_VAR_gpg_key_ring="~/.gnupg/secring.gpg"
+    export TF_VAR_gpg_key_ring="/tmp/gpgkey/secring.gpg" #"~/.gnupg/secring.gpg"
     export TF_VAR_github_email=$(op read "op://eng-vault/gpg-signing-key/email")
     export TF_VAR_git_branch=$(git branch --show-current)
 fi

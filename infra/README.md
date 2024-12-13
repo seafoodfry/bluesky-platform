@@ -6,13 +6,30 @@ Commands to get things up and running
 ```
 ./run-cmd-in-shell.sh terraform init
 
-. ./setup_env_vars.sh 
+. ./setup_env_vars.sh
 
 ./run-cmd-in-shell.sh terraform plan -out a.plan
 
 ./run-cmd-in-shell.sh terraform apply a.plan
 ```
 
+The TF apply will fail at first with some error such as
+```
+flux_bootstrap_git.this: Creating...
+╷
+│ Error: Bootstrap run error
+│ 
+│   with flux_bootstrap_git.this,
+│   on flux.tf line 18, in resource "flux_bootstrap_git" "this":
+│   18: resource "flux_bootstrap_git" "this" {
+│ 
+│ CustomResourceDefinition/alerts.notification.toolkit.fluxcd.io dry-run failed: Get
+│ "https://EKS_ENDPOINT.gr7.us-east-1.eks.amazonaws.com/api?timeout=32s": dial tcp: lookup
+│ EKS_ENDPOINT.gr7.us-east-1.eks.amazonaws.com: no such host
+╵
+```
+
+This is because you need a valid Kubeconfig, which you can only get after the cluster has been created.
 Once you got the cluster running, get your kubeconfig:
 ```
 ./run-cmd-in-shell.sh aws eks update-kubeconfig --region us-east-1 --name platform
@@ -89,6 +106,8 @@ And to get the key ring for TF:
 gpg --export-secret-keys --armor $KEY_ID
 ```
 
+To get the key ring that TF needs for the flux provider, run the following
+(you may only see similar output just the first time you run the command):
 ```
 $ gpg --export-secret-keys > ~/.gnupg/secring.gpg
 gpg: starting migration from earlier GnuPG versions
@@ -96,17 +115,8 @@ gpg: porting secret keys from '/Users/username/.gnupg/secring.gpg' to gpg-agent
 gpg: migration succeeded
 ```
 
-The key ID you need for flux must be the short ID:
-
-```
-# Another option. GitHub uses the long format.
-# gpg --list-secret-keys --keyid-format SHORT
-
-gpg --list-secret-keys --keyid-format LONG
-
-```
-
-Note that the key ID will be in this format
+Note that the key ID will show when you run `gpg --list-secret-keys --keyid-format=long`
+in the following format:
 ```
 [keyboxd]
 ---------
@@ -115,6 +125,9 @@ sec   ed25519/<KEYID> 2024-12-11 [SC] [expires: 2024-12-18]
 uid                 <OMMITTED>
 ```
 So you want the thing after the algorithm, in this case, the thing after `ed25519`.
+
+**Note:** TF will need access to read this keyring.
+Because of that, we are copying the keyrin into `/tmp/gpgkey` via `./setup_env_vars.sh`.
 
 ---
 # EBS CSI Driver
