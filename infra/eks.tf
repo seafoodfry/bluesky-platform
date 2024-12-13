@@ -1,9 +1,12 @@
 # https://github.com/terraform-aws-modules/terraform-aws-eks
+locals {
+  cluster_name = "platform"
+}
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "~> 20.31"
 
-  cluster_name    = "platform"
+  cluster_name    = local.cluster_name
   cluster_version = "1.31"
 
   cluster_upgrade_policy = {
@@ -81,6 +84,10 @@ module "eks" {
         }
       }
     }
+  }
+
+  node_security_group_tags = {
+    "karpenter.sh/discovery" = local.cluster_name
   }
 
   # Possible values:
