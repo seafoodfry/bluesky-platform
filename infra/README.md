@@ -36,6 +36,11 @@ Once you got the cluster running, get your kubeconfig:
 ```
 
 To clean up
+
+```
+kubectl delete ec2nodeclass default
+```
+
 ```
 . ./setup_env_vars.sh
 
