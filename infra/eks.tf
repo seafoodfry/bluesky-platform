@@ -101,8 +101,8 @@ module "eks" {
       # NOTE: do keep this with more than 1 node.
       # Ay addon that requires its own nodes WILL ask for a node with these taints.
       min_size     = 1
-      max_size     = 3
-      desired_size = 2 # Karpenter controller redundancy.
+      max_size     = 5
+      desired_size = 3 # Karpenter controller redundancy + flux.
 
       taints = {
         # This Taint aims to keep just EKS Addons and Karpenter running on this MNG

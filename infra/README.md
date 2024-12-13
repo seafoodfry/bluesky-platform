@@ -141,6 +141,41 @@ kubectl get helmreleases -A
 ```
 
 ---
+# Cloudtrail
+
+```sql
+fields @timestamp, eventName, eventSource, userAgent, userIdentity.invokedBy
+| sort @timestamp desc
+```
+
+```sql
+fields @timestamp, eventName, eventSource, userAgent, userIdentity.invokedBy
+| filter eventSource = "sqs.amazonaws.com"
+| sort @timestamp desc
+```
+or
+```sql
+fields @timestamp, eventName, eventSource, userAgent, userIdentity.invokedBy
+| filter eventSource like /sqs/
+| sort @timestamp desc
+```
+
+
+```sql
+fields @timestamp, eventName, eventSource, userAgent, userIdentity.invokedBy
+| filter eventSource != "sts.amazonaws.com" 
+    and eventSource != "eks.amazonaws.com"
+    and eventSource != "cloudtrail.amazonaws.com"
+| sort @timestamp desc
+```
+
+```sql
+stats count(*) by eventSource
+| sort count desc
+```
+
+
+---
 # EBS CSI Driver
 
 ## Dynamic Storage Provisioning
