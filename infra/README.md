@@ -130,6 +130,17 @@ So you want the thing after the algorithm, in this case, the thing after `ed2551
 Because of that, we are copying the keyrin into `/tmp/gpgkey` via `./setup_env_vars.sh`.
 
 ---
+# Interacting with Flux
+
+```
+kubectl get helmrepositories -A
+```
+
+```
+kubectl get helmreleases -A
+```
+
+---
 # EBS CSI Driver
 
 ## Dynamic Storage Provisioning
