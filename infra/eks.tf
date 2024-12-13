@@ -156,8 +156,9 @@ module "karpenter" {
   enable_pod_identity             = true
   create_pod_identity_association = true
 
-  namespace       = "kube-system"
-  service_account = "karpenter"
+  node_iam_role_use_name_prefix = false
+  namespace                     = "kube-system"
+  service_account               = "karpenter"
 
   # Attach additional IAM policies to the Karpenter node IAM role.
   node_iam_role_additional_policies = {
