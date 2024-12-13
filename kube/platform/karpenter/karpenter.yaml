@@ -71,6 +71,8 @@ spec:
         group: karpenter.k8s.aws
         kind: EC2NodeClass
         name: default
+      expireAfter: 24h
+      terminationGracePeriod: 1h
       requirements:
         - key: karpenter.sh/capacity-type
           operator: In
@@ -78,15 +80,12 @@ spec:
         - key: kubernetes.io/arch
           operator: In
           values: ["arm64"]
-        - key: node.kubernetes.io/instance-type
+        - key: "karpenter.k8s.aws/instance-category"
           operator: In
-          values: 
-            - "t4g.medium"
-            - "c6g.medium"
-            - "m6g.medium"
+          values: ["c", "m", "r", "t"]
   limits:
     cpu: 100
     memory: 100Gi
   disruption:
-    consolidationPolicy: WhenEmpty
-    consolidateAfter: 30s
+    consolidationPolicy: WhenEmptyOrUnderutilized
+    consolidateAfter: 1m

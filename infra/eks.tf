@@ -120,23 +120,23 @@ module "eks" {
       enable_capacity_rebalancing = true
     }
 
-    apps = {
-      ami_type      = "AL2023_ARM_64_STANDARD"
-      capacity_type = "SPOT"
-      instance_types = [
-        "t4g.medium", # ARM
-        "c6g.medium", # ARM
-        "m6g.medium"  # ARM
-      ]
-      min_size     = 2 # Needed when running flux.
-      max_size     = 10
-      desired_size = 2
+    #   apps = {
+    #     ami_type      = "AL2023_ARM_64_STANDARD"
+    #     capacity_type = "SPOT"
+    #     instance_types = [
+    #       "t4g.medium", # ARM
+    #       "c6g.medium", # ARM
+    #       "m6g.medium"  # ARM
+    #     ]
+    #     min_size     = 2 # Needed when running flux.
+    #     max_size     = 10
+    #     desired_size = 2
 
-      update_config = {
-        max_unavailable_percentage = 33
-      }
-      enable_capacity_rebalancing = true
-    }
+    #     update_config = {
+    #       max_unavailable_percentage = 33
+    #     }
+    #     enable_capacity_rebalancing = true
+    #   }
   }
 }
 
