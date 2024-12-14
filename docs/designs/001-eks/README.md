@@ -10,7 +10,7 @@ and [karpenter](https://karpenter.sh/).
 Flux is installed via its Terraform provider and it uses the contents of `kube/platform` to deploy different workloads.
 There are only two workloads we currently implement: 
 
-1. Karpenter, a Karpenter EC2NodeCLass, and a Karpenter NodePool
+1. ~Karpenter,~ a Karpenter EC2NodeCLass, and a Karpenter NodePool
 2. A test pod and deployment running ubuntu and executing the command `sleep infinity`
 
 We also provide utility scripts to create a shell terminal with temporary IAM role credentials.
@@ -21,6 +21,9 @@ Same with our Terraform management scripts.
 
 In general, we want to manage all kube resources via GitOps.
 But this makes the management of non-default resources turn into a recipe-driven method (there is some fancy way of saying this but the word is not coming to me right now).
+
+**Update:** As of December 2024, Flux is not smart enough to bootstrap entire environments
+
 But what it means is that flux will fail to install itself because the kustomize controller will continuously throw errors
 such as this one because the resources it is trying to manage do not yet exist:
 ```
