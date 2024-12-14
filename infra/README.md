@@ -13,7 +13,7 @@ Commands to get things up and running
 ./run-cmd-in-shell.sh terraform apply a.plan
 ```
 
-The TF apply will fail at first with some error such as
+Your first TF apply will fail with the following error:
 ```
 flux_bootstrap_git.this: Creating...
 ╷
@@ -30,20 +30,32 @@ flux_bootstrap_git.this: Creating...
 ```
 
 This is because you need a valid Kubeconfig, which you can only get after the cluster has been created.
-Once you got the cluster running, get your kubeconfig:
+
 ```
 ./run-cmd-in-shell.sh aws eks update-kubeconfig --region us-east-1 --name platform
 ```
 
-To clean up
+Then,
+```
+./run-cmd-in-shell.sh terraform plan -out a.plan
+
+./run-cmd-in-shell.sh terraform apply a.plan
+```
+
+### To clean up
 
 ```
+./run-cmd-in-shell.sh terraform destroy -target flux_bootstrap_git.this
+```
+
+First, delete the nodepool
+```
+kubectl delete nodepool default
 kubectl delete ec2nodeclass default
 ```
 
+Then bring everything down
 ```
-. ./setup_env_vars.sh
-
 ./run-cmd-in-shell.sh terraform destroy -auto-approve
 ```
 
