@@ -18,6 +18,21 @@ The magic here is that we make use of 1Password to manage the corresponding IAM 
 `op` CLI mechanics.
 Same with our Terraform management scripts.
 
+```
+{
+    "level":"error",
+    "ts":"2024-12-14T15:33:18.180Z",
+    "msg":"Reconciliation failed after 1.161220852s, next try in 10m0s",
+    "controller":"kustomization",
+    "controllerGroup":"kustomize.toolkit.fluxcd.io",
+    "controllerKind":"Kustomization",
+    "Kustomization":{"name":"flux-system","namespace":"flux-system"},
+    "namespace":"flux-system",
+    "name":"flux-system",
+    "reconcileID":"05c2cd5b-c0a3-4246-8b1b-7b2a95501d5f","revision":"platform-tuning@sha1:f45da305f9133345f18b88dfc7e0f40db0ab3625",
+    "error":"EC2NodeClass/default dry-run failed: no matches for kind \"EC2NodeClass\" in version \"karpenter.k8s.aws/v1\""
+}
+```
 
 ---
 # Motivation
