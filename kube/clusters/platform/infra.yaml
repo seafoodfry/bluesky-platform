@@ -1,4 +1,5 @@
 # Installs all common cluster controllers.
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: infra-controllers
@@ -10,7 +11,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./kube/infras/controllers
+  path: ./kube/infra/controllers
   prune: true
   wait: true
 ---

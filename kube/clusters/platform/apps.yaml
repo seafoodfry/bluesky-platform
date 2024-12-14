@@ -11,7 +11,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
-  path: ./kube/apps/production
+  path: ./kube/apps/platform
   prune: true
   wait: true
   timeout: 5m0s
