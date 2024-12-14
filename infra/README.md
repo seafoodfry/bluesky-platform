@@ -33,14 +33,29 @@ This is because you need a valid Kubeconfig, which you can only get after the cl
 
 So once you got the cluster running:
 ```
-mv flux.tf.tpl flux.tf
+cp flux.tf.tpl flux.tf
 ```
 and
 ```
 ./run-cmd-in-shell.sh aws eks update-kubeconfig --region us-east-1 --name platform
 ```
 
-To clean up
+Then,
+```
+./run-cmd-in-shell.sh terraform plan -out a.plan
+
+./run-cmd-in-shell.sh terraform apply a.plan
+```
+
+### To clean up
+
+```
+rm flux.tf
+
+./run-cmd-in-shell.sh terraform plan -out a.plan
+
+./run-cmd-in-shell.sh terraform apply a.plan
+```
 
 ```
 kubectl delete ec2nodeclass default

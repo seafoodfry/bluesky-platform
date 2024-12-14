@@ -45,7 +45,7 @@ kind: EC2NodeClass
 metadata:
   name: default
 spec:
-  role: Karpenter-platform-2024121315250968540000001a
+  role: Karpenter-platform
   #amiFamily: AL2
   amiFamily: AL2023
   amiSelectorTerms:
