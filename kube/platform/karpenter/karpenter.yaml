@@ -46,10 +46,11 @@ metadata:
   name: default
 spec:
   role: Karpenter-platform-2024121315250968540000001a
-  amiFamily: AL2
-  #amiFamily: AL2023
-  #amiSelectorTerms:
-  #  - alias: al2023@v20241205
+  #amiFamily: AL2
+  amiFamily: AL2023
+  amiSelectorTerms:
+  #  - alias: al2023@v20241205 # amazon-eks-node-al2023-arm64-standard-1.31-v20241205
+    - name: "amazon-eks-node-*"
   subnetSelectorTerms:
     - tags:
         karpenter.sh/discovery: platform

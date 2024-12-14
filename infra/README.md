@@ -13,7 +13,7 @@ Commands to get things up and running
 ./run-cmd-in-shell.sh terraform apply a.plan
 ```
 
-The TF apply will fail at first with some error such as
+If we had `flux.tf`, TF apply would fail at first with some error such as
 ```
 flux_bootstrap_git.this: Creating...
 ╷
@@ -30,7 +30,12 @@ flux_bootstrap_git.this: Creating...
 ```
 
 This is because you need a valid Kubeconfig, which you can only get after the cluster has been created.
-Once you got the cluster running, get your kubeconfig:
+
+So once you got the cluster running:
+```
+mv flux.tf.tpl flux.tf
+```
+and
 ```
 ./run-cmd-in-shell.sh aws eks update-kubeconfig --region us-east-1 --name platform
 ```
