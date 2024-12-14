@@ -51,6 +51,7 @@ Then,
 First, delete the nodepool
 ```
 kubectl delete nodepool default
+kubectl delete ec2nodeclass default
 ```
 
 Then bring everything down

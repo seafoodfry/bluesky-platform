@@ -4,7 +4,7 @@
 
 We created a platform on top of EKS.
 The EKS cluster has a single managed node group.
-The node group spins up nodeswith taints that will only allow EKS addons along with [flux](https://fluxcd.io/)
+The node group spins up nodes with taints that will only allow EKS addons along with [flux](https://fluxcd.io/)
 and [karpenter](https://karpenter.sh/).
 
 Flux is installed via its Terraform provider and it uses the contents of `kube/platform` to deploy different workloads.
@@ -18,6 +18,11 @@ The magic here is that we make use of 1Password to manage the corresponding IAM 
 `op` CLI mechanics.
 Same with our Terraform management scripts.
 
+
+In general, we want to manage all kube resources via GitOps.
+But this makes the management of non-default resources turn into a recipe-driven method (there is some fancy way of saying this but the word is not coming to me right now).
+But what it means is that flux will fail to install itself because the kustomize controller will continuously throw errors
+such as this one because the resources it is trying to manage do not yet exist:
 ```
 {
     "level":"error",
@@ -33,6 +38,8 @@ Same with our Terraform management scripts.
     "error":"EC2NodeClass/default dry-run failed: no matches for kind \"EC2NodeClass\" in version \"karpenter.k8s.aws/v1\""
 }
 ```
+
+Because of that, we are managing karpenter via Terraform, with the Helm provider, instead.
 
 ---
 # Motivation
