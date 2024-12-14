@@ -18,7 +18,7 @@ provider "flux" {
 resource "flux_bootstrap_git" "this" {
   delete_git_manifests = true
   keep_namespace       = true
-  path                 = "kube/platform"
+  path                 = "kube/clusters/platform"
   # See https://github.com/fluxcd/flux2
   version = "v2.4.0"
   # Borrow the EKS addon nodes.

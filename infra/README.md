@@ -157,6 +157,10 @@ kubectl get helmrepositories -A
 kubectl get helmreleases -A
 ```
 
+```
+kubectl -n flux-system logs -l app=kustomize-controller
+```
+
 ---
 # Interacting with Karpenter
 

@@ -1,0 +1,48 @@
+# Here we install the "controller" karpenter.
+# The CustomResources needed to make use of it, namely a EC2NodeClass and a NodePool
+# are defined in kube/infra/configs.
+# If we put them in the same place we'll run into a bootstraping problem where flux will not
+# install the Karpenter HelmRepository nor its HelmRelease because it doesn't know
+# what to do with an EC2NodeClass or a NodePool.
+# But the CRDs for those resources will only exist after the HelmRelease is installed.
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: HelmRepository
+metadata:
+  name: karpenter
+  namespace: flux-system
+spec:
+  interval: 1h
+  url: oci://public.ecr.aws/karpenter
+  type: oci
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: karpenter
+  namespace: kube-system
+spec:
+  interval: 2m
+  chart:
+    spec:
+      chart: karpenter
+      version: "1.1.0"
+      sourceRef:
+        kind: HelmRepository
+        name: karpenter
+        namespace: flux-system
+      interval: 1h
+  install:
+    createNamespace: false
+  values:
+    settings:
+      clusterName: platform
+      interruptionQueue: Karpenter-platform
+    controller:
+      # Lower resources than normal because the node pools we created use small EC2s.
+      resources:
+        requests:
+          cpu: "300m"
+          memory: "300Mi"
+        # limits:
+        #   cpu: 1
+        #   memory: 1Gi
