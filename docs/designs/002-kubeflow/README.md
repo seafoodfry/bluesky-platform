@@ -31,3 +31,12 @@ We will be pursuing a variety of experiments and models so no specific functiona
 ---
 
 # Design Details
+
+To install the device plugin:
+
+```sh
+kubectl create -f https://raw.githubusercontent.com/NVIDIA/k8s-device-plugin/v0.17.1/deployments/static/nvidia-device-plugin.yml
+```
+
+We found the instructions in
+[github.com/NVIDIA/k8s-device-plugin](https://github.com/NVIDIA/k8s-device-plugin).
