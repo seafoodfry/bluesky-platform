@@ -1,0 +1,24 @@
+# https://github.com/aws/deep-learning-containers/blob/master/available_images.md#ec2-framework-arm64graviton-containers-ec2-ecs-and-eks-support-only
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pytorch
+spec:
+  containers:
+  - name: pytorch
+    image: 763104351884.dkr.ecr.us-east-1.amazonaws.com/pytorch-inference-arm64:2.6.0-gpu-py312-cu124-ubuntu22.04-ec2
+    command: ["sleep", "infinity"]
+    resources:
+      limits:
+        nvidia.com/gpu: 1
+      requests:
+        nvidia.com/gpu: 1
+        memory: "4Gi"
+        cpu: "2"
+  tolerations:
+  - key: nvidia.com/gpu
+    operator: Equal
+    value: "true"
+    effect: NoSchedule
+  nodeSelector:
+    karpenter.sh/nodepool: gpu-g5g

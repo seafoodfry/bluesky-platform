@@ -25,7 +25,9 @@ spec:
   chart:
     spec:
       chart: karpenter
-      version: "1.1.0"
+      # See https://github.com/aws/karpenter-provider-aws/blob/main/charts/karpenter/Chart.yaml
+      # And https://karpenter.sh/docs/upgrading/compatibility/
+      version: "1.4.0"
       sourceRef:
         kind: HelmRepository
         name: karpenter
