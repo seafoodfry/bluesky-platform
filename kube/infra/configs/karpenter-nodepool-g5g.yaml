@@ -29,6 +29,10 @@ spec:
         group: karpenter.k8s.aws
         kind: EC2NodeClass
         name: gpu-g5g
+      taints:
+        - key: nvidia.com/gpu
+          effect: NoSchedule
+          value: "true"
       expireAfter: 4h
       terminationGracePeriod: 30m
       requirements:
