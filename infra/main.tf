@@ -10,20 +10,20 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 5.76"
+      version = "~> 5.95"
     }
     # https://registry.terraform.io/providers/fluxcd/flux/latest/docs
     flux = {
       source  = "fluxcd/flux"
-      version = "~> 1.4"
+      version = "~> 1.5"
     }
     helm = {
       source  = "hashicorp/helm"
-      version = "~> 2.16"
+      version = "~> 2.17"
     }
   }
 
-  required_version = "~> 1.9.8"
+  required_version = "~> 1.11"
 }
 
 # EC2 types https://aws.amazon.com/ec2/instance-types/

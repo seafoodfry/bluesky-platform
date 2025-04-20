@@ -44,7 +44,7 @@ Broadcast: 10.0.1.255           00001010.00000000.00000001. 11111111
 Hosts/Net: 254                   Class A, Private Internet */
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
-  version = "~> 5.16"
+  version = "~> 5.19"
 
   name = "platform"
   cidr = "10.0.0.0/16"

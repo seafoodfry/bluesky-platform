@@ -4,10 +4,10 @@ locals {
 }
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "~> 20.31"
+  version = "~> 20.36"
 
   cluster_name    = local.cluster_name
-  cluster_version = "1.31"
+  cluster_version = "1.32"  # https://docs.aws.amazon.com/eks/latest/userguide/kubernetes-versions.html
 
   cluster_upgrade_policy = {
     support_type = "STANDARD"
@@ -106,7 +106,7 @@ module "eks" {
       ]
 
       # NOTE: do keep this with more than 1 node.
-      # Ay addon that requires its own nodes WILL ask for a node with these taints.
+      # Any addon that requires its own nodes WILL ask for a node with these taints.
       min_size     = 1
       max_size     = 5
       desired_size = 3 # Karpenter controller redundancy + flux.
