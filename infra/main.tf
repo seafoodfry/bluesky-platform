@@ -1,10 +1,12 @@
 terraform {
   backend "s3" {
-    bucket         = "seafoodfry-tf-backend"
-    key            = "bluesky-platform"
-    region         = "us-east-2"
-    dynamodb_table = "terraform-state-lock"
-    encrypt        = true
+    bucket       = "seafoodfry-tf-backend"
+    key          = "bluesky-platform"
+    region       = "us-east-2"
+    use_lockfile = true
+    # TODO: dyanmi state locking has been deprecated. We should remove it.
+    #dynamodb_table = "terraform-state-lock"
+    encrypt = true
   }
 
   required_providers {

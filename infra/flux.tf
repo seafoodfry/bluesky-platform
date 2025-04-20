@@ -11,7 +11,12 @@ provider "flux" {
     #  password = var.github_token
     #}
     ssh = {
-      username    = var.github_username
+      # DO not make the username your actual username!
+      # This is meant for a deploy key, and it you do use something other than `git`, then you'll get something like:
+      # could not clone git repository: unable to clone 'ssh://USERNAME@github.com/seafoodfry/bluesky-platform.git':
+      # ssh: handshake failed: ssh: unable to authenticate, attempted methods [none publickey], 
+      # no supported methods remain.
+      username    = "git"
       private_key = var.github_deploy_private_key
     }
     gpg_key_ring = var.gpg_key_ring
