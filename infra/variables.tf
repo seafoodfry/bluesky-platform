@@ -21,7 +21,7 @@ variable "github_username" {
   description = "Used by flux to authenticate"
 }
 
-variable "github_token" {
+variable "github_deploy_private_key" {
   type        = string
   sensitive   = true
   description = "Used by flux to authenticate"

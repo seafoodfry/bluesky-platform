@@ -3,11 +3,16 @@ provider "flux" {
     config_path = "~/.kube/config"
   }
   git = {
-    url    = "https://github.com/seafoodfry/bluesky-platform"
+    #url    = "https://github.com/seafoodfry/bluesky-platform"
+    url    = "ssh://git@github.com/seafoodfry/bluesky-platform.git"
     branch = var.git_branch
-    http = {
-      username = var.github_username
-      password = var.github_token
+    #http = {
+    #  username = var.github_username
+    #  password = var.github_token
+    #}
+    ssh = {
+      username    = var.github_username
+      private_key = var.github_deploy_private_key
     }
     gpg_key_ring = var.gpg_key_ring
     gpg_key_id   = var.gpg_key_id
@@ -20,7 +25,7 @@ resource "flux_bootstrap_git" "this" {
   keep_namespace       = true
   path                 = "kube/clusters/platform"
   # See https://github.com/fluxcd/flux2
-  version = "v2.4.0"
+  version = "v2.5.1"
   # Borrow the EKS addon nodes.
   toleration_keys = ["CriticalAddonsOnly"]
 }

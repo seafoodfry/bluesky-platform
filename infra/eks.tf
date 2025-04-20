@@ -7,7 +7,7 @@ module "eks" {
   version = "~> 20.36"
 
   cluster_name    = local.cluster_name
-  cluster_version = "1.32"  # https://docs.aws.amazon.com/eks/latest/userguide/kubernetes-versions.html
+  cluster_version = "1.32" # https://docs.aws.amazon.com/eks/latest/userguide/kubernetes-versions.html
 
   cluster_upgrade_policy = {
     support_type = "STANDARD"
