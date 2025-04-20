@@ -3,7 +3,7 @@
 ## Prep
 
 1. Create a deploy key for the repo you want to use and update the 1pass item reference in [./setup_env_vars.sh](./setup_env_vars.sh)
-1. Create a GPG keyring, see the corresponding section down below. And update the 1pass entry as used in [./setup_env_vars.sh](./setup_env_vars.sh)
+1. Create a GPG keyring, see the corresponding section down below. And update the 1pass entry as used in [./setup_env_vars.sh](./setup_env_vars.sh) and add the public key to GitHub.
 
 ## Usage
 
